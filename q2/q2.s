@@ -1,6 +1,7 @@
 .section .data
 array: .space 4000
 fmt: .asciz "%d "
+fmt_last: .asciz "%d\n"
 stack: .space 4000
 result: .space 4000
 
@@ -142,8 +143,16 @@ print_loop:
     slli t1, t0, 2
     add  t2, s2, t1
     lw   a1, 0(t2)
-    la   a0, fmt
 
+    # check if last element
+    addi t4, s3, -1
+    beq  t0, t4, use_last_fmt
+
+    la   a0, fmt
+    j    do_print
+use_last_fmt:
+    la   a0, fmt_last
+do_print:
     addi sp, sp, -8       # save t0 across printf
     sd   t0, 0(sp)       
     call printf
@@ -158,4 +167,7 @@ end:
     addi sp, sp, 8        # 
     li   a0, 0
     ret
-    
+
+#
+#riscv64-linux-gnu-gcc -static q2.s -o a.out
+#qemu-riscv64 ./a.out 85 96 70 80 102

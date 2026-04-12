@@ -11,8 +11,8 @@ result: .space 4000
 .extern atoi
 
 main:
-    #a0= argc (number of arguments)
-    #a1 = argv (the argument as a whole) it is a pointer to strings 
+    #a0=argc (number of arguments)
+    #a1= argv (the argument as a whole) it is a pointer to strings 
 
     addi sp,sp,-8
     sd ra, 0(sp) # save return address
@@ -134,7 +134,7 @@ addi t0, t0, -1
 j for_loop
 
 exit:
-    li t0, 0          # i = 0
+    li t0, 0          # i=0
 
     
 print_loop:
@@ -144,7 +144,7 @@ print_loop:
     add  t2, s2, t1
     lw   a1, 0(t2)
 
-    # check if last element
+    #check if last element
     addi t4, s3, -1
     beq  t0, t4, use_last_fmt
 
@@ -153,18 +153,18 @@ print_loop:
 use_last_fmt:
     la   a0, fmt_last
 do_print:
-    addi sp, sp, -8       # save t0 across printf
+    addi sp, sp, -8       #save t0 across printf
     sd   t0, 0(sp)       
     call printf
-    ld   t0, 0(sp)        # load t0 back
+    ld   t0, 0(sp)        #load t0 back
     addi sp, sp, 8        
 
     addi t0, t0, 1
     j print_loop
 
 end:
-    ld   ra, 0(sp)        # restore ra
-    addi sp, sp, 8        # 
+    ld   ra, 0(sp)        #restore ra
+    addi sp, sp, 8         
     li   a0, 0
     ret
 
